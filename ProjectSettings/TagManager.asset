@@ -11,8 +11,8 @@ TagManager:
   - 
   - Water
   - UI
-  - NoCollisionTogether
-  - 
+  - ThroughObstacles
+  - ForcedCollision
   - 
   - 
   - 
