@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_playerName: Fast
   m_stats: {fileID: 11400000, guid: 40fb475e5ddc72446863cf48022d39b6, type: 2}
-  m_mainColor: {r: 0, g: 1, b: 0, a: 0.5019608}
-  m_secondaryColor: {r: 1, g: 1, b: 0, a: 0.2}
+  m_mainColor: {r: 0, g: 1, b: 0, a: 1}
+  m_secondaryColor: {r: 1, g: 1, b: 0, a: 1}
   m_appearancePrefab: {fileID: 0}

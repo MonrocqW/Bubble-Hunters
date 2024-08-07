@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace BubHun.Players.Movement
@@ -7,6 +8,8 @@ namespace BubHun.Players.Movement
         [SerializeField]
         private PlayerData m_playerData;
         [SerializeField]
+        private Transform m_dashTrailsParent;
+        [SerializeField]
         private float m_maxSpeed = 30f;
 
         private Rigidbody2D m_rb;
@@ -15,12 +18,14 @@ namespace BubHun.Players.Movement
         private float m_dashTime;
         private float m_dashCooldownStartTime = 0;
         private int m_storedDashes = 1;
+        private TrailRenderer[] m_dashTrails = Array.Empty<TrailRenderer>();
 
         #region Unity
 
         void Start()
         {
             m_rb = GetComponent<Rigidbody2D>();
+            m_dashTrails = m_dashTrailsParent.GetComponentsInChildren<TrailRenderer>();
         }
 
         void Update()
@@ -89,6 +94,8 @@ namespace BubHun.Players.Movement
 
         void RechargeDash()
         {
+            if(m_storedDashes > m_playerData.Stats.DashNumber)
+                m_storedDashes = m_playerData.Stats.DashNumber;
             if(m_storedDashes == m_playerData.Stats.DashNumber)
                 return;
             
@@ -108,6 +115,8 @@ namespace BubHun.Players.Movement
             m_dashTime = Time.time + m_playerData.Stats.DashDurationTime;
             Vector2 l_dashDirection = m_moveDirection != Vector2.zero ? m_moveDirection : m_rb.velocity.normalized;
             m_rb.velocity = l_dashDirection * m_playerData.Stats.DashSpeed;
+            foreach (TrailRenderer l_trail in m_dashTrails)
+                l_trail.emitting = true;
             if(m_playerData.Stats.PhantomDash)
                 this.PhantomMode(true);
         }
@@ -118,6 +127,8 @@ namespace BubHun.Players.Movement
             {
                 m_isDashing = false;
                 m_rb.velocity = m_rb.velocity.normalized * m_playerData.Stats.MoveSpeed;
+                foreach (TrailRenderer l_trail in m_dashTrails)
+                    l_trail.emitting = false;
                 this.PhantomMode(false);
             }
         }

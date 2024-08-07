@@ -13,7 +13,15 @@ namespace BubHun.Players
         [SerializeField] 
         private Renderer m_sphere;
         [SerializeField] 
+        private float m_sphereEmissive = 2;
+        
+        [Header("Trail")]
+        [SerializeField] 
         private TrailRenderer m_trail;
+        [SerializeField] 
+        private float m_trailAlphaStart = 0.5f;
+        [SerializeField] 
+        private float m_trailAlphaEnd = 0.2f;
 
         // Start is called before the first frame update
         void Start()
@@ -29,8 +37,9 @@ namespace BubHun.Players
             m_playerData = p_playerData;
             m_movement.SetPlayer(p_playerData);
             m_sphere.material.color = p_playerData.MainColor;
-            m_trail.startColor = p_playerData.MainColor;
-            m_trail.endColor = p_playerData.SecondaryColor;
+            m_sphere.material.SetColor("_EmissionColor", p_playerData.SecondaryColor + new Color(0,0,0,m_sphereEmissive-1));
+            m_trail.startColor = p_playerData.MainColor - new Color(0,0,0,1-m_trailAlphaStart);
+            m_trail.endColor = p_playerData.SecondaryColor - new Color(0,0,0,1-m_trailAlphaEnd);
         }
 
         [ContextMenu("Apply player")]

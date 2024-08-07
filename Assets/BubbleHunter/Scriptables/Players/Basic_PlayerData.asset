@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_playerName: Basic
   m_stats: {fileID: 11400000, guid: abce7fcec79ba0a47bb67bb8f6a68cd5, type: 2}
-  m_mainColor: {r: 0, g: 0, b: 1, a: 0.5019608}
-  m_secondaryColor: {r: 0, g: 1, b: 1, a: 0.2}
+  m_mainColor: {r: 0, g: 0, b: 1, a: 1}
+  m_secondaryColor: {r: 0, g: 1, b: 1, a: 1}
   m_appearancePrefab: {fileID: 0}
