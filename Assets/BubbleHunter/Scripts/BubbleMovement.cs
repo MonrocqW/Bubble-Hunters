@@ -5,7 +5,7 @@ namespace BubHun.Players.Movement
     public class BubbleMovement : MonoBehaviour
     {
         [SerializeField]
-        private PlayerStats m_playerStats;
+        private PlayerData m_playerData;
         [SerializeField]
         private float m_maxSpeed = 30f;
 
@@ -25,6 +25,8 @@ namespace BubHun.Players.Movement
 
         void Update()
         {
+            if (m_playerData == null)
+                return;
             RechargeDash();
             HandleInput();
             HandleDash();
@@ -32,6 +34,8 @@ namespace BubHun.Players.Movement
 
         void FixedUpdate()
         {
+            if (m_playerData == null)
+                return;
             if (!m_isDashing)
             {
                 Move();
@@ -57,6 +61,17 @@ namespace BubHun.Players.Movement
         }
 
         #endregion
+        
+        #region Set Player
+
+        public void SetPlayer(PlayerData p_data)
+        {
+            if (p_data == null)
+                return;
+            m_playerData = p_data;
+        }
+        
+        #endregion
 
         #region Base Movement
 
@@ -65,7 +80,7 @@ namespace BubHun.Players.Movement
             if(m_rb.velocity.magnitude>m_maxSpeed)
                 m_rb.velocity = m_rb.velocity.normalized * m_maxSpeed;
             if(m_moveDirection != Vector2.zero)
-                m_rb.AddForce(m_moveDirection * m_playerStats.MoveSpeed);// = Vector2.Lerp(m_rb.velocity, m_moveDirection * m_moveSpeed, m_redirectionSpeed);
+                m_rb.AddForce(m_moveDirection * m_playerData.Stats.MoveSpeed);// = Vector2.Lerp(m_rb.velocity, m_moveDirection * m_moveSpeed, m_redirectionSpeed);
         }
 
         #endregion
@@ -74,10 +89,10 @@ namespace BubHun.Players.Movement
 
         void RechargeDash()
         {
-            if(m_storedDashes == m_playerStats.DashNumber)
+            if(m_storedDashes == m_playerData.Stats.DashNumber)
                 return;
             
-            if(Time.time > m_dashCooldownStartTime + m_playerStats.DashCooldownTime)
+            if(Time.time > m_dashCooldownStartTime + m_playerData.Stats.DashCooldownTime)
             {
                 m_storedDashes++;
                 m_dashCooldownStartTime = Time.time;
@@ -87,13 +102,13 @@ namespace BubHun.Players.Movement
         void StartDash()
         {
             m_isDashing = true;
-            if(m_storedDashes == m_playerStats.DashNumber)
+            if(m_storedDashes == m_playerData.Stats.DashNumber)
                 m_dashCooldownStartTime = Time.time;
             m_storedDashes--;
-            m_dashTime = Time.time + m_playerStats.DashDurationTime;
+            m_dashTime = Time.time + m_playerData.Stats.DashDurationTime;
             Vector2 l_dashDirection = m_moveDirection != Vector2.zero ? m_moveDirection : m_rb.velocity.normalized;
-            m_rb.velocity = l_dashDirection * m_playerStats.DashSpeed;
-            if(m_playerStats.PhantomDash)
+            m_rb.velocity = l_dashDirection * m_playerData.Stats.DashSpeed;
+            if(m_playerData.Stats.PhantomDash)
                 this.PhantomMode(true);
         }
 
@@ -102,7 +117,7 @@ namespace BubHun.Players.Movement
             if (m_isDashing && Time.time >= m_dashTime)
             {
                 m_isDashing = false;
-                m_rb.velocity = m_rb.velocity.normalized * m_playerStats.MoveSpeed;
+                m_rb.velocity = m_rb.velocity.normalized * m_playerData.Stats.MoveSpeed;
                 this.PhantomMode(false);
             }
         }
