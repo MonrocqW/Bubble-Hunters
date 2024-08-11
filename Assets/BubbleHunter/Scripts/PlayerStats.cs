@@ -8,7 +8,7 @@ namespace BubHun.Players
         [SerializeField]
         private float m_baseSpeed = 5;
         [SerializeField]
-        private float m_dashNb = 1;
+        private int m_dashNb = 1;
         [SerializeField]
         private float m_dashSpeedMultiplier = 3;
         [SerializeField]
@@ -24,7 +24,7 @@ namespace BubHun.Players
         private const float DASH_DURATION = 0.2f;
 
         public float MoveSpeed => m_baseSpeed * m_speedBoost;
-        public float DashNumber => m_dashNb;
+        public int DashNumber => m_dashNb;
         public float DashSpeed => MoveSpeed * m_dashSpeedMultiplier;
         public float DashCooldownTime => DASH_COOLDOWN * m_dashCooldownModifier;
         public float DashDurationTime => DASH_DURATION * m_dashDurationModifier;
