@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace BubHun.Players.Movement
 {
@@ -33,7 +34,6 @@ namespace BubHun.Players.Movement
             if (m_playerData == null)
                 return;
             RechargeDash();
-            HandleInput();
             HandleDash();
         }
 
@@ -51,18 +51,17 @@ namespace BubHun.Players.Movement
 
         #region Inputs
 
-        void HandleInput()
+        public void OnMovement(InputValue p_value)
         {
-            //float moveX = Input.GetAxis("Horizontal");
-            //float moveY = Input.GetAxis("Vertical");
-            float moveX = (Input.GetKey(KeyCode.RightArrow) ? 1 : 0) + (Input.GetKey(KeyCode.LeftArrow) ? -1 : 0);
-            float moveY = (Input.GetKey(KeyCode.UpArrow) ? 1 : 0) + (Input.GetKey(KeyCode.DownArrow) ? -1 : 0);
-            m_moveDirection = new Vector2(moveX, moveY).normalized;
+            m_moveDirection = p_value.Get<Vector2>().normalized;
+        }
 
-            if (Input.GetKeyDown(KeyCode.Space) && m_storedDashes>0)
-            {
-                StartDash();
-            }
+        public void OnDash()
+        {
+            if (m_isDashing || m_storedDashes < 1)
+                return;
+
+            this.StartDash();
         }
 
         #endregion
