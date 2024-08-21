@@ -7,7 +7,7 @@ namespace BubHun.Players.Movement
     public class BubbleMovement : MonoBehaviour
     {
         [SerializeField]
-        private PlayerData m_playerData;
+        private CharacterData m_characterData;
         [SerializeField]
         private Transform m_dashTrailsParent;
         [SerializeField]
@@ -31,7 +31,7 @@ namespace BubHun.Players.Movement
 
         void Update()
         {
-            if (m_playerData == null)
+            if (m_characterData == null)
                 return;
             RechargeDash();
             HandleDash();
@@ -39,7 +39,7 @@ namespace BubHun.Players.Movement
 
         void FixedUpdate()
         {
-            if (m_playerData == null)
+            if (m_characterData == null)
                 return;
             if (!m_isDashing)
             {
@@ -58,6 +58,8 @@ namespace BubHun.Players.Movement
 
         public void OnDash()
         {
+            if (m_characterData == null)
+                return;
             if (m_isDashing || m_storedDashes < 1)
                 return;
 
@@ -68,11 +70,11 @@ namespace BubHun.Players.Movement
         
         #region Set Player
 
-        public void SetPlayer(PlayerData p_data)
+        public void SetPlayer(CharacterData p_data)
         {
             if (p_data == null)
                 return;
-            m_playerData = p_data;
+            m_characterData = p_data;
         }
         
         #endregion
@@ -84,7 +86,7 @@ namespace BubHun.Players.Movement
             if(m_rb.velocity.magnitude>m_maxSpeed)
                 m_rb.velocity = m_rb.velocity.normalized * m_maxSpeed;
             if(m_moveDirection != Vector2.zero)
-                m_rb.AddForce(m_moveDirection * m_playerData.Stats.MoveSpeed);// = Vector2.Lerp(m_rb.velocity, m_moveDirection * m_moveSpeed, m_redirectionSpeed);
+                m_rb.AddForce(m_moveDirection * m_characterData.Stats.MoveSpeed);// = Vector2.Lerp(m_rb.velocity, m_moveDirection * m_moveSpeed, m_redirectionSpeed);
         }
 
         #endregion
@@ -93,12 +95,12 @@ namespace BubHun.Players.Movement
 
         void RechargeDash()
         {
-            if(m_storedDashes > m_playerData.Stats.DashNumber)
-                m_storedDashes = m_playerData.Stats.DashNumber;
-            if(m_storedDashes == m_playerData.Stats.DashNumber)
+            if(m_storedDashes > m_characterData.Stats.DashNumber)
+                m_storedDashes = m_characterData.Stats.DashNumber;
+            if(m_storedDashes == m_characterData.Stats.DashNumber)
                 return;
             
-            if(Time.time > m_dashCooldownStartTime + m_playerData.Stats.DashCooldownTime)
+            if(Time.time > m_dashCooldownStartTime + m_characterData.Stats.DashCooldownTime)
             {
                 m_storedDashes++;
                 m_dashCooldownStartTime = Time.time;
@@ -108,15 +110,15 @@ namespace BubHun.Players.Movement
         void StartDash()
         {
             m_isDashing = true;
-            if(m_storedDashes == m_playerData.Stats.DashNumber)
+            if(m_storedDashes == m_characterData.Stats.DashNumber)
                 m_dashCooldownStartTime = Time.time;
             m_storedDashes--;
-            m_dashTime = Time.time + m_playerData.Stats.DashDurationTime;
+            m_dashTime = Time.time + m_characterData.Stats.DashDurationTime;
             Vector2 l_dashDirection = m_moveDirection != Vector2.zero ? m_moveDirection : m_rb.velocity.normalized;
-            m_rb.velocity = l_dashDirection * m_playerData.Stats.DashSpeed;
+            m_rb.velocity = l_dashDirection * m_characterData.Stats.DashSpeed;
             foreach (TrailRenderer l_trail in m_dashTrails)
                 l_trail.emitting = true;
-            if(m_playerData.Stats.PhantomDash)
+            if(m_characterData.Stats.PhantomDash)
                 this.PhantomMode(true);
         }
 
@@ -125,7 +127,7 @@ namespace BubHun.Players.Movement
             if (m_isDashing && Time.time >= m_dashTime)
             {
                 m_isDashing = false;
-                m_rb.velocity = m_rb.velocity.normalized * m_playerData.Stats.MoveSpeed;
+                m_rb.velocity = m_rb.velocity.normalized * m_characterData.Stats.MoveSpeed;
                 foreach (TrailRenderer l_trail in m_dashTrails)
                     l_trail.emitting = false;
                 this.PhantomMode(false);

@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111d531bbafc86242bf21ac6a506e18c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_playerData: {fileID: 11400000, guid: 2cb08e47b7e2a4d409af9a3761fbed32, type: 2}
+  m_characterData: {fileID: 0}
   m_movement: {fileID: 4770518429119408391}
   m_sphere: {fileID: 6111322698682425899}
   m_sphereEmissive: 2
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 706c2c503e5812b41b69f38888145ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_playerData: {fileID: 0}
+  m_characterData: {fileID: 0}
   m_dashTrailsParent: {fileID: 5118940002976316598}
   m_maxSpeed: 30
 --- !u!50 &206585118752948667
@@ -201,7 +201,7 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Keyboard1
+  m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
