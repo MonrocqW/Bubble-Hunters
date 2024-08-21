@@ -1,4 +1,4 @@
-using BubHun.Global;
+using BubHun.Library;
 using UnityEngine;
 
 namespace BubHun.Players

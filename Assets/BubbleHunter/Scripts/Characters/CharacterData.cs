@@ -1,12 +1,15 @@
+using BubHun.Library;
 using UnityEngine;
 
 namespace BubHun.Players
 {
     [CreateAssetMenu(fileName = "A_CharacterData", menuName = "Bubble Hunter/Character Data", order = 1)]
-    public class CharacterData : ScriptableObject
+    public class CharacterData : ScriptableObject, ILibraryItem
     {
         [SerializeField]
-        private string m_playerName;
+        private string m_characterName;
+        [SerializeField]
+        private string m_description;
         [SerializeField]
         private CharacterStats m_stats;
         [SerializeField]
@@ -16,7 +19,8 @@ namespace BubHun.Players
         [SerializeField] 
         private GameObject m_appearancePrefab;
 
-        public string Name => m_playerName;
+        public string Name => m_characterName;
+        public string Description => m_description;
         public CharacterStats Stats => m_stats;
         public Color MainColor => m_mainColor;
         public Color SecondaryColor => m_secondaryColor;

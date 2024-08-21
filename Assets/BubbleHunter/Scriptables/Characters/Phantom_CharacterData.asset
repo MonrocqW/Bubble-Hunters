@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b571b335b4542ce4d98dc7f0eda5f720, type: 3}
   m_Name: Phantom_CharacterData
   m_EditorClassIdentifier: 
-  m_playerName: Phantom
+  m_characterName: Phantom
+  m_description: Can dash through obstacles. Longer cooldown
   m_stats:
     m_baseSpeed: 5
     m_dashNb: 1
