@@ -1,4 +1,5 @@
 using System;
+using BubHun.Lobby;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,16 +22,34 @@ namespace BubHun.Players.Movement
         private int m_storedDashes = 1;
         private TrailRenderer[] m_dashTrails = Array.Empty<TrailRenderer>();
 
+        private bool m_movementLocked = false;
+        private bool CanMove => !m_movementLocked && PlayersManager.AllPlayersMovementAuthorized;
+
         #region Unity
 
         void Start()
         {
             m_rb = GetComponent<Rigidbody2D>();
             m_dashTrails = m_dashTrailsParent.GetComponentsInChildren<TrailRenderer>();
+            this.UpdateMovementAuthorized();
+            PlayersManager.OnMovementAuthorizationChanged += this.UpdateMovementAuthorized;
+        }
+
+        private void OnDestroy()
+        {
+            PlayersManager.OnMovementAuthorizationChanged -= this.UpdateMovementAuthorized;
+        }
+
+        private void UpdateMovementAuthorized()
+        {
+            m_rb.isKinematic = !PlayersManager.AllPlayersMovementAuthorized;
+            m_rb.velocity = Vector2.zero;
         }
 
         void Update()
         {
+            if (!CanMove)
+                return;
             if (m_characterData == null)
                 return;
             RechargeDash();
@@ -39,6 +58,8 @@ namespace BubHun.Players.Movement
 
         void FixedUpdate()
         {
+            if (!CanMove)
+                return;
             if (m_characterData == null)
                 return;
             if (!m_isDashing)
@@ -58,6 +79,8 @@ namespace BubHun.Players.Movement
 
         public void OnDash()
         {
+            if (!CanMove)
+                return;
             if (m_characterData == null)
                 return;
             if (m_isDashing || m_storedDashes < 1)

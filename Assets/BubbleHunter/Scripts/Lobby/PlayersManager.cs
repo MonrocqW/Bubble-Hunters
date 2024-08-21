@@ -11,6 +11,7 @@ namespace BubHun.Lobby
     [RequireComponent(typeof(PlayerInputManager))]
     public class PlayersManager : MonoBehaviour
     {
+        [SerializeField] private Transform m_playersHolder;
         [SerializeField] private GameObject m_lobbyUiParent;
         [SerializeField] private CharacterSelection[] m_lobbyMenus = Array.Empty<CharacterSelection>();
         
@@ -20,7 +21,10 @@ namespace BubHun.Lobby
         private bool m_inLobby = true;
         private PlayerInputManager m_playerInputManager;
         private static Dictionary<int,PlayerConfig> s_players = new Dictionary<int,PlayerConfig>();
-        //private static List<PlayerConfig> s_players = new List<PlayerConfig>();
+
+        private static bool s_movementAuthorized = false;
+        public static bool AllPlayersMovementAuthorized => s_movementAuthorized;
+        public static event Action OnMovementAuthorizationChanged;
 
         private void Awake()
         {
@@ -28,6 +32,8 @@ namespace BubHun.Lobby
             s_instance = this;
             SceneManager.sceneLoaded += this.OnSceneLoaded;
         }
+        
+        #region On Scene Loaded
 
         private void OnSceneLoaded(Scene p_scene, LoadSceneMode p_loadMode)
         {
@@ -46,17 +52,29 @@ namespace BubHun.Lobby
 
         private void OnAnyLevel()
         {
-            //throw new NotImplementedException();
+            // TODO: players initial position & timer before moving
+            SetMovementAuthorization(true);
         }
 
         private void OnLobby()
         {
+            SetMovementAuthorization(false);
             foreach (int l_player in s_players.Keys)
             {
                 this.SetLobbySelection(l_player);
             }
         }
 
+        private void SetMovementAuthorization(bool p_authorized)
+        {
+            s_movementAuthorized = p_authorized;
+            OnMovementAuthorizationChanged?.Invoke();
+        }
+        
+        #endregion
+
+        #region Lobby Character Selection
+        
         private void SetLobbySelection(int p_playerId)
         {
             m_lobbyMenus[p_playerId].gameObject.SetActive(true);
@@ -70,10 +88,21 @@ namespace BubHun.Lobby
             m_lobbyMenus[p_playerId].gameObject.SetActive(false);
         }
 
+        public void SelectCharacter(int p_playerIndex, CharacterData p_charData)
+        {
+            if (s_players.ContainsKey(p_playerIndex))
+                s_players[p_playerIndex].SetCharacter(p_charData);
+        }
+        
+        #endregion
+        
+        #region Player join events
+
         public void OnPlayerJoined(PlayerInput p_player)
         {
             Debug.Log($"Player joined {p_player.playerIndex}");
             s_players[p_player.playerIndex] = new PlayerConfig(p_player);
+            p_player.transform.SetParent(m_playersHolder);
             //s_players.Add(new PlayerConfig(p_player));
             if(m_inLobby)
                 this.SetLobbySelection(p_player.playerIndex);
@@ -87,12 +116,8 @@ namespace BubHun.Lobby
             if(m_inLobby)
                 this.RemoveLobbySelection(p_player.playerIndex);
         }
-
-        public void SelectCharacter(int p_playerIndex, CharacterData p_charData)
-        {
-            if (s_players.ContainsKey(p_playerIndex))
-                s_players[p_playerIndex].SetCharacter(p_charData);
-        }
+        
+        #endregion
     }
 
     public class PlayerConfig
