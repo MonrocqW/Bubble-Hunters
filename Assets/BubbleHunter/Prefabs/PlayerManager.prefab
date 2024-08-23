@@ -234,6 +234,7 @@ MonoBehaviour:
   - {fileID: 8824094459583268578}
   - {fileID: 2647544739519910876}
   - {fileID: 7755256569033192968}
+  m_roundStartDelay: 5
 --- !u!114 &5114188116420972281
 MonoBehaviour:
   m_ObjectHideFlags: 0
