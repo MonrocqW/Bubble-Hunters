@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using BubHun.Players.Movement;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -40,6 +41,14 @@ namespace BubHun.Players
             m_sphere.material.SetColor("_EmissionColor", p_characterData.SecondaryColor + new Color(0,0,0,m_sphereEmissive-1));
             m_trail.startColor = p_characterData.MainColor - new Color(0,0,0,1-m_trailAlphaStart);
             m_trail.endColor = p_characterData.SecondaryColor - new Color(0,0,0,1-m_trailAlphaEnd);
+        }
+
+        public async void TeleportTo(Vector3 p_pos)
+        {
+            m_trail.emitting = false;
+            this.transform.position = p_pos;
+            await Task.Delay(100);
+            m_trail.emitting = true;
         }
 
         [ContextMenu("Apply character")]

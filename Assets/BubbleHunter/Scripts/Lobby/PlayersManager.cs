@@ -64,7 +64,7 @@ namespace BubHun.Lobby
         {
             foreach (PlayerConfig l_config in s_players.Values)
             {
-                l_config.playerInput.transform.position = p_spawnSpots.GetRandomSpot().position;
+                l_config.characterHolder?.TeleportTo(p_spawnSpots.GetRandomSpot().position);
             }
         }
 
@@ -136,18 +136,20 @@ namespace BubHun.Lobby
     {
         public int playerIndex;
         public PlayerInput playerInput;
+        public CharacterHolder characterHolder;
         public CharacterData characterSelected;
 
         public PlayerConfig(PlayerInput p_input)
         {
             playerIndex = p_input.playerIndex;
             playerInput = p_input;
+            characterHolder = p_input.GetComponent<CharacterHolder>();
         }
 
         public void SetCharacter(CharacterData p_charData)
         {
             characterSelected = p_charData;
-            playerInput.GetComponent<CharacterHolder>()?.SetCharacter(p_charData);
+            characterHolder?.SetCharacter(p_charData);
         }
     }
 }
