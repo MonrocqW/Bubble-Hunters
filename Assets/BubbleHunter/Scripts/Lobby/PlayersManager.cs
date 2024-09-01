@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using BubHun.Level;
 using BubHun.Players;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,6 +16,7 @@ namespace BubHun.Lobby
         [SerializeField] private Transform m_playersHolder;
         [SerializeField] private GameObject m_lobbyUiParent;
         [SerializeField] private CharacterSelection[] m_lobbyMenus = Array.Empty<CharacterSelection>();
+        [SerializeField] private float m_roundStartDelay;
         
         private static PlayersManager s_instance;
         public static PlayersManager Instance => s_instance;
@@ -50,10 +53,19 @@ namespace BubHun.Lobby
             }
         }
 
-        private void OnAnyLevel()
+        private async void OnAnyLevel()
         {
-            // TODO: players initial position & timer before moving
+            SetMovementAuthorization(false);
+            await Task.Delay((int)(m_roundStartDelay * 1000));
             SetMovementAuthorization(true);
+        }
+
+        public void SetPlayersSpotsWith(SpawnSpots p_spawnSpots)
+        {
+            foreach (PlayerConfig l_config in s_players.Values)
+            {
+                l_config.characterHolder?.TeleportTo(p_spawnSpots.GetRandomSpot().position);
+            }
         }
 
         private void OnLobby()
@@ -124,18 +136,20 @@ namespace BubHun.Lobby
     {
         public int playerIndex;
         public PlayerInput playerInput;
+        public CharacterHolder characterHolder;
         public CharacterData characterSelected;
 
         public PlayerConfig(PlayerInput p_input)
         {
             playerIndex = p_input.playerIndex;
             playerInput = p_input;
+            characterHolder = p_input.GetComponent<CharacterHolder>();
         }
 
         public void SetCharacter(CharacterData p_charData)
         {
             characterSelected = p_charData;
-            playerInput.GetComponent<CharacterHolder>()?.SetCharacter(p_charData);
+            characterHolder?.SetCharacter(p_charData);
         }
     }
 }
