@@ -1,14 +1,15 @@
 using BubHun.Library;
 using BubHun.Players;
+using BubHun.Weapons;
 using UnityEngine;
 
 namespace BubHun.Lobby
 {
     public class CharacterSelection : MonoBehaviour
     {
-        [Header("Character")]
+        [Header("Wheels")]
         [SerializeField] private LibraryWheelSelection m_characterSelection;
-        //[SerializeField] private LibraryWheelSelection m_weaponSelection;
+        [SerializeField] private LibraryWheelSelection m_weaponSelection;
 
         private int m_playerIndex = 0;
         private bool m_validated = false;
@@ -22,6 +23,7 @@ namespace BubHun.Lobby
             if(p_validate)
             {
                 PlayersManager.Instance.SelectCharacter(m_playerIndex, (CharacterData)m_characterSelection.CurrentItem);
+                PlayersManager.Instance.SelectWeapon(m_playerIndex, (WeaponData)m_weaponSelection.CurrentItem);
             }
         }
     }

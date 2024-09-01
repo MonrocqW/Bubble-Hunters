@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using BubHun.Players.Movement;
 using UnityEngine;
-using UnityEngine.VFX;
 
 namespace BubHun.Players
 {

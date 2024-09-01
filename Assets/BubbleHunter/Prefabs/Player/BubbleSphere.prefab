@@ -38,6 +38,37 @@ Transform:
   - {fileID: 8572315396489203244}
   m_Father: {fileID: 8134327962771510703}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &830791060224210202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2625828282819508492}
+  m_Layer: 0
+  m_Name: WeaponParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2625828282819508492
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830791060224210202}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.2, y: -0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8134327962771510703}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2107764619059145338
 GameObject:
   m_ObjectHideFlags: 0
@@ -48,6 +79,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8134327962771510703}
   - component: {fileID: 6492470611164374103}
+  - component: {fileID: 7521267136718915077}
   - component: {fileID: 4770518429119408391}
   - component: {fileID: 206585118752948667}
   - component: {fileID: 5420944489955696123}
@@ -73,6 +105,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8369864761368590630}
+  - {fileID: 2625828282819508492}
   - {fileID: 4188614244032787393}
   - {fileID: 5503522765803575820}
   - {fileID: 5118940002976316598}
@@ -97,6 +130,20 @@ MonoBehaviour:
   m_trail: {fileID: 7744911771038306267}
   m_trailAlphaStart: 0.5
   m_trailAlphaEnd: 0.2
+--- !u!114 &7521267136718915077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2107764619059145338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ab3bea2aa0d5104e910922c217d753f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_weaponData: {fileID: 0}
+  m_weaponParent: {fileID: 2625828282819508492}
 --- !u!114 &4770518429119408391
 MonoBehaviour:
   m_ObjectHideFlags: 0

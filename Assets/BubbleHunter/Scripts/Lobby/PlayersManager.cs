@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BubHun.Level;
 using BubHun.Players;
+using BubHun.Weapons;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -105,6 +106,12 @@ namespace BubHun.Lobby
             if (s_players.ContainsKey(p_playerIndex))
                 s_players[p_playerIndex].SetCharacter(p_charData);
         }
+
+        public void SelectWeapon(int p_playerIndex, WeaponData p_weaponData)
+        {
+            if (s_players.ContainsKey(p_playerIndex))
+                s_players[p_playerIndex].SetWeapon(p_weaponData);
+        }
         
         #endregion
         
@@ -138,18 +145,27 @@ namespace BubHun.Lobby
         public PlayerInput playerInput;
         public CharacterHolder characterHolder;
         public CharacterData characterSelected;
+        public WeaponHolder weaponHolder;
+        public WeaponData weaponSelected;
 
         public PlayerConfig(PlayerInput p_input)
         {
             playerIndex = p_input.playerIndex;
             playerInput = p_input;
             characterHolder = p_input.GetComponent<CharacterHolder>();
+            weaponHolder = p_input.GetComponent<WeaponHolder>();
         }
 
         public void SetCharacter(CharacterData p_charData)
         {
             characterSelected = p_charData;
             characterHolder?.SetCharacter(p_charData);
+        }
+
+        public void SetWeapon(WeaponData p_weaponData)
+        {
+            weaponSelected = p_weaponData;
+            weaponHolder?.SetWeapon(p_weaponData);
         }
     }
 }
