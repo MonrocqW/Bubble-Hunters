@@ -1,11 +1,12 @@
 using System;
+using BubHun.Cooldown;
 using BubHun.Lobby;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace BubHun.Players.Movement
 {
-    public class BubbleMovement : MonoBehaviour
+    public class BubbleMovement : MonoBehaviour, ICooldownProvider
     {
         [SerializeField]
         private CharacterData m_characterData;
@@ -98,6 +99,7 @@ namespace BubHun.Players.Movement
             if (p_data == null)
                 return;
             m_characterData = p_data;
+            m_storedDashes = m_characterData.Stats.DashNumber;
         }
         
         #endregion
@@ -167,5 +169,26 @@ namespace BubHun.Players.Movement
         }
 
         #endregion
+
+        public CooldownData GetCooldownData()
+        {
+            if (m_characterData == null)
+                return new CooldownData();
+            CooldownData l_data = new CooldownData()
+            {
+                storedCharges = m_storedDashes,
+                maxCharges = m_characterData.Stats.DashNumber
+            };
+            if (m_storedDashes >= l_data.maxCharges)
+            {
+                l_data.timeLeft = 0;
+                l_data.progress = 1;
+                return l_data;
+            }
+
+            l_data.timeLeft = m_characterData.Stats.DashCooldownTime - (Time.time - m_dashCooldownStartTime);
+            l_data.progress = 1 - l_data.timeLeft / m_characterData.Stats.DashCooldownTime;
+            return l_data;
+        }
     }
 }

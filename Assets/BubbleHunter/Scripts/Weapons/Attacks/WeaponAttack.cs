@@ -7,6 +7,7 @@ namespace BubHun.Weapons
         [SerializeField] protected float m_duration = 1;
 
         protected float m_timer = 0;
+        protected float Progress => m_timer / m_duration;
 
         public virtual void SetInit(Transform p_origin)
         {

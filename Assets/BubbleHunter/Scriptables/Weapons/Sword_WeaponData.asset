@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_weaponName: Sword
   m_description: A sword emitting a slash at a short distance.
-  m_weaponPrefab: {fileID: 0}
+  m_cooldownTime: 1
+  m_weaponPrefab: {fileID: 1513540822096124035, guid: d10d1796e7236c94ca2d0c7e647d0579,
+    type: 3}

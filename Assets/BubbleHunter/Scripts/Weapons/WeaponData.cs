@@ -11,6 +11,8 @@ namespace BubHun.Weapons
         [SerializeField]
         private string m_description;
         [SerializeField] 
+        private float m_cooldownTime;
+        [SerializeField] 
         private GameObject m_weaponPrefab;
 
         private void OnValidate()
@@ -33,5 +35,6 @@ namespace BubHun.Weapons
         public string Name => m_weaponName;
         public string Description => m_description;
         public GameObject WeaponPrefab => m_weaponPrefab;
+        public float CooldownTime => m_cooldownTime;
     }
 }
